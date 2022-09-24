@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+   <!-- <bean class="com.qf.demo.service.impl.CalculatorImpl" id="calculator"/>-->
+    <bean class="com.qf.demo.service.impl.CalculatorImpl" id="calculator"/>
+    <bean class="com.qf.demo.aop.LogAdvice" id="logAdvice"/>
+    <!--配置aop-->
+    <!--proxy-target-class="true"-->
+    <aop:config proxy-target-class="true">
+        <!-- 指定返回值为int 指定包下的方法add()  方法的参数指定为两个int-->
+       <!-- <aop:pointcut id="pc1" expression="execution(int com.qf.demo.service.impl.CalculatorImpl.add(int,int))"/>-->
+        <!--任意返回值 指定包下的任意方法  方法返回值任意-->
+       <!-- <aop:pointcut id="pc1" expression="execution(* com.qf.demo.service.impl.*.*(..))"/>-->
+
+        <!--这个表示拦截所有包含@MyAction注解的方法-->
+       <!-- <aop:pointcut id="pc1" expression="@annotation(com.qf.demo.MyAction)"/>-->
+
+        <aop:pointcut id="pc1" expression="@within(com.qf.demo.MyAction)"/>
+        <aop:aspect ref="logAdvice">
+            <!--前置通知-->
+     <!--       <aop:before method="before" pointcut-ref="pc1"/>
+            &lt;!&ndash;后置通知&ndash;&gt;
+            <aop:after method="after" pointcut-ref="pc1"/>
+            &lt;!&ndash;返回通知&ndash;&gt;
+            <aop:after-returning method="returning" pointcut-ref="pc1" returning="o"/>
+            &lt;!&ndash;异常通知   throwing="e"表示异常信息&ndash;&gt;
+            <aop:after-throwing method="ex" pointcut-ref="pc1" throwing="e"/>-->
+
+            <!--环绕通知-->
+            <aop:around method="around" pointcut-ref="pc1"/>
+
+        </aop:aspect>
+    </aop:config>
+
+
+</beans>
